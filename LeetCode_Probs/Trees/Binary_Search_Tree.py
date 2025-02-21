@@ -43,4 +43,7 @@ def BST_Recursive(root, target):
 # Time Complexity is O(Log(N)) to Search*
 # *: If the BST is Balanced, otherwise we are not eliminating half @each turn
 # Balanced Property: Height of Left BST and Right BST only differ by 1 @max
+# Also if balaned, height of overall tree is roughly Log(N) (As @each level, approx 2x nodes)
+# We prefer BST to Sorted Arrays, as in Arrays Insertion and Deletion is O(N)
+# In a balanced BST, Insertion and Deletion is O(Log(N))
         
