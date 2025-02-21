@@ -44,4 +44,27 @@ class Solution(object):
         else:
             parent.right = TreeNode(val)
         return root
+    
+# Recursive Solution
+class Solution(object):
+    def insertIntoBST(self, root, val):
+        """
+        :type root: Optional[TreeNode]
+        :type val: int
+        :rtype: Optional[TreeNode]
+        """
         
+        # Handle if root is None
+        # Also Handles if 0 nodes in OG Tree
+        if root is None:
+            return TreeNode(val)
+        
+        if val > root.val:
+            # Need to insert @right
+            root.right = self.insertIntoBST(root.right, val)
+
+        else:
+            # Need to insert @left
+            root.left = self.insertIntoBST(root.left, val)
+        
+        return root
