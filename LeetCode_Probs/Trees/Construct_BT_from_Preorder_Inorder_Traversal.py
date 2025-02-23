@@ -98,5 +98,94 @@ class Solution:
             root.right = self.buildTree(right_preorder, right_inorder) # Pass in the List of RST and It's Pre-Order & In-Order
         
         return root
+    
+# Shorten the code
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        # LST: Left Sub Tree
+        # RST: Right Sub Tree
+        # Basically from the pre-order and in-order get Root, LST and RST
+        # Keep doing until we have one of LST and RST empty, and a single node in the Sub Tree(s)
+        # Or both LST and RST both empty
+        # Intuition: Pre-Order tells us first element in it is the root
+        # Inorder divides from the Root into LST and RST
+        # So we can recursively, for each Sub Tree find the root and LST and RST
+        # And Assign accordingly!
+
+        # If preorder or inorder list empty, return None, as we know that previous must point to None
+        if not preorder or not inorder:
+            return None
         
+        print("INORDER", inorder)
+        print("PREORDER", preorder)
+        root = TreeNode(preorder[0])
+        print("ROOT", root.val)
+
+        # Get Root Index @Inorder
+        root_index = inorder.index(root.val)
+
+        # left_inorder
+        left_inorder = inorder[:root_index]
+        # right_inorder
+        right_inorder = inorder[(root_index + 1):]
+
+        # left pre-order
+        # Num elements in left inorder post root
+        # Num elements is equal to (root index)
+        # Start from 1 @preorder, to skip root
+        left_preorder = preorder[1:(root_index+1)]
+        right_preorder = preorder[(1+root_index):]
+        
+        root.left = self.buildTree(left_preorder, left_inorder) # Pass in the List of LST and It's Pre-Order & In-Order
+        root.right = self.buildTree(right_preorder, right_inorder) # Pass in the List of RST and It's Pre-Order & In-Order
+        
+        return root
+    
+# Solving in O(N)
+# 
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        """
+        Constructs a binary tree from preorder and inorder traversal lists.
+        
+        :param preorder: List[int] - Preorder traversal of the tree (Root -> Left -> Right)
+        :param inorder: List[int] - Inorder traversal of the tree (Left -> Root -> Right)
+        :return: Optional[TreeNode] - Root of the reconstructed binary tree
+        """
+        
+        # Dictionary to store index positions of inorder values for O(1) lookups
+        indices = {val: idx for idx, val in enumerate(inorder)}
+        
+        # Preorder index to track which element is the current root
+        self.pre_idx = 0
+        
+        def dfs(l: int, r: int) -> Optional[TreeNode]:
+            """
+            Recursively constructs the binary tree.
+            
+            :param l: int - Left boundary of the inorder traversal range
+            :param r: int - Right boundary of the inorder traversal range
+            :return: Optional[TreeNode] - Constructed subtree root
+            """
+            
+            # Base Case: If the left boundary surpasses the right, no elements exist
+            if l > r:
+                return None  # No subtree to construct
+
+            # Select the current root from preorder traversal
+            root_val = preorder[self.pre_idx]
+            self.pre_idx += 1  # Move to the next element in preorder
+            root = TreeNode(root_val)  # Create the root node
+            
+            # Find the root in inorder traversal to divide left and right subtrees
+            mid = indices[root_val]
+            
+            # Recursively build left and right subtrees
+            root.left = dfs(l, mid - 1)  # Elements before `mid` are in the left subtree
+            root.right = dfs(mid + 1, r)  # Elements after `mid` are in the right subtree
+            
+            return root  # Return the constructed subtree
+        
+        # Call DFS on the full inorder range
+        return dfs(0, len(inorder) - 1)
         
