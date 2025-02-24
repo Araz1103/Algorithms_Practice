@@ -61,6 +61,22 @@ class Solution(object):
         op.extend(self.inorderTraversal(root.right))
         return op
     
+# Recursive Solution
+# List passed as param
+class Solution(object):
+    def inorderTraversal(self, root, result=[]):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: List[int]
+        """
+        # Since list is mutable, once passed to the function
+        # Keeps adding whenever finds a root
+        # Rest helps it go in the right Traversal
+        if not root:
+            self.inorderTraversal(root.left, result)
+            result.append(root.val)
+            self.inorderTraversal(root.right, result)
+    
 # Iterative Solution
 class Solution(object):
     def inorderTraversal(self, root):
