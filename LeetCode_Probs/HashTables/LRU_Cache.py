@@ -53,10 +53,22 @@ class LRUCache:
         self.current_count = 0
         self.cap = capacity
         self.hash_map_nodes = {}
-        self.lru_node = DLL_Node() #Head Always @beginning
-        self.mru_node = DLL_Node() #Tail Always @end
+        self.lru_node = None #Head Always @beginning
+        self.mru_node = None #Tail Always @end
+
+    def visualise(self):
+        if self.lru_node is not None:
+            print("None->")
+            curr_node = self.lru_node
+            while curr_node is not None:
+                print(f"[{curr_node.key}, {curr_node.val}]->")
+                curr_node = curr_node.next
+            print("None")
+        else:
+            print("Empty Cache!")
 
     def get(self, key: int) -> int:
+        self.visualise()
         print(f"Getting Key: {key}")
         if key not in self.hash_map_nodes:
             print("Key not found!")
@@ -66,32 +78,56 @@ class LRUCache:
             node = self.hash_map_nodes[key]
             node_val = node.val
             print(f"Key found with val:{node_val}")
-            if self.cap==1:
-                print("Capacity is 1, No Need to update!")
+            if self.current_count==1 or self.cap==1:
+                print("Count/Capacity is 1, No Need to update!")
                 # If only 1 node @cache, don't need to update
                 return node_val
             else:
                 # We need to remove this node and add it to tail
-                
-                # Remove Node
-                prev_node = node.previous
-                print(f"Prev Node is: {prev_node.key, prev_node.val}")
-                next_node = node.next
-                print(f"Next Node is: {next_node.key, next_node.val}")
-                prev_node.next = next_node
-                next_node.previous = prev_node
 
-                # Add @Tail
-                last_node = self.mru_node.previous
-                last_node.next = node
-                node.next = self.mru_node
-                node.previous = last_node
-                self.mru_node.previous = node
-                print(f"New MRU Node: {self.mru_node.previous.key, self.mru_node.previous.val}")
-                print(f"New LRU Node: {self.lru_node.next.key, self.lru_node.next.val}")
+                # Check if Node is @Head or not
+                if self.lru_node==node:
+                    print("Node is Head")
+                    next_node = node.next
+                    print(f"Next Node is: {next_node.key}")
+                    self.lru_node = next_node
+                    next_node.previous = None
+
+                    print("Adding Node @Tail now")
+
+                    # Add @Tail
+                    last_node = self.mru_node
+                    last_node.next = node
+                    node.previous = last_node
+                    node.next = None
+                    self.mru_node = node #Make it the Tail
+                else:
+                    # Check if node is @tail already or not
+                    # If it is, do nothing
+                    # Else Simply disconnect, allow previous to connect to next
+                    # Then add it @ tail
+                    if self.mru_node!=node:
+                        print("Node is not at Tail!")
+                        prev_node = node.previous
+                        print(f"Prev Node is: {prev_node.key, prev_node.val}")
+                        next_node = node.next
+                        print(f"Next Node is: {next_node.key, next_node.val}")
+                        prev_node.next = next_node
+                        next_node.previous = prev_node
+                
+                        # Add @Tail
+                        last_node = self.mru_node
+                        last_node.next = node
+                        node.previous = last_node
+                        node.next = None
+                        self.mru_node = node #Make it the Tail
+                
+                print(f"New MRU Node: {self.mru_node.key, self.mru_node.val}")
+                print(f"New LRU Node: {self.lru_node.key, self.lru_node.val}")
                 return node_val
         
     def put(self, key: int, value: int) -> None:
+        self.visualise()
         print(f"Put for Key: {key} and Value: {value}")
         # First check if key in Hash Map or not
         # If it is we update the value of node
@@ -100,78 +136,117 @@ class LRUCache:
             # Update val
             print("Key in HashMap, updating value!")
             self.hash_map_nodes[key].val = value
+            # Also need to bring it to MRU
+            # Let's just call get on it!
+            self.get(key)
         else:
             print("Key not in HashMap")
             # Depending on current count we add a node
+            new_node = DLL_Node(key, value)
+            self.hash_map_nodes[key] = new_node
             if self.current_count == self.cap: #Will always be max equal to cap never gt
                 # Since there is no capacity to add a new node
                 # We remove the LRU Node and then add a node @tail (MRU)
                 print(f"Cache is at capacity with {self.current_count}")
-                # Removing Node from LRU
-                lru_node = self.lru_node.next
-                key_to_remove = lru_node.key
-                print(f"LRU Found: {key_to_remove}")
-                if lru_node.next != self.mru_node:
-                    # There is some node we need LRU to point to now & vice versa
-                    lru_node.next.previous = self.lru_node
-                    self.lru_node.next = lru_node.next
-                    lru_node.next = None
-                    lru_node.previous = None
 
-                    # Now add a new node @tail
-                    new_node = DLL_Node(key, value)
-                    self.hash_map_nodes[key] = new_node
+                if self.cap==1:
+                    print("Max Cap is 1")
+                    # Remove old lru node
+                    lru_node = self.lru_node
+                    key_to_remove = lru_node.key
+                    print(f"LRU Found: {key_to_remove}")
+                    self.hash_map_nodes.pop(key_to_remove)
+                    # If only 1 node can be added
+                    self.lru_node = new_node
+                    self.mru_node = new_node
 
-                    last_node = self.mru_node.previous
-                    last_node.next = new_node
-                    new_node.previous = last_node
-                    new_node.next = self.mru_node
-                    self.mru_node.previous = new_node
-                
                 else:
-                    # This means that there is no node after lru node
-                    # Only pointing to MRU
-                    # Remove from MRU as well
-                    self.lru_node.next = None #Will point to New Node
-                    self.mru_node.previous = None #Will point to New Node
-                    lru_node.next = None
-                    lru_node.previous = None
+                    # Now we need to remove the LRU & Add the new node @MRU
+                    # Removing LRU Node
+                    lru_node = self.lru_node
+                    key_to_remove = lru_node.key
+                    print(f"LRU Found: {key_to_remove}")
+                    self.hash_map_nodes.pop(key_to_remove)
+                    lru_node.next.previous = None
+                    self.lru_node = lru_node.next
+                    # Add the new node @MRU
+                    mru_node = self.mru_node
+                    mru_node.next = new_node
+                    new_node.previous = mru_node
+                    self.mru_node = new_node
 
-                    # Now add a new node @tail
-                    new_node = DLL_Node(key, value)
-                    self.hash_map_nodes[key] = new_node
-
-                    self.lru_node.next = new_node
-                    self.mru_node.previous = new_node
-                    new_node.next = self.mru_node
-                    new_node.previous = self.lru_node
-
-                #@end remove the lru key from hashmap
-                self.hash_map_nodes.pop(key_to_remove)
-   
             else:
                 print(f"There is capacity left to add a new node!: {self.current_count}")
                 # There is capacity left to add a new entry
                 # Add a new node @tail, so MRU is now that
-                new_node = DLL_Node(key, value)
-                if self.mru_node.previous is not None: #This means there is a node before MRU
-                    print("Cache NOT Empty")
-                    last_node = self.mru_node.previous
-                    self.mru_node.previous = new_node
-                    new_node.previous = last_node
-                else: #No Node, therefore Cache Empty
-                    print("Cache was Empty")
-                    self.mru_node.previous = new_node
-                    # Since empty, LRU is also this
-                    self.lru_node.next = new_node
-                    new_node.previous = self.lru_node
-
-                new_node.next = self.mru_node
+                if self.current_count==0:
+                    self.lru_node = new_node
+                    self.mru_node = new_node
+                else:
+                    current_mru = self.mru_node
+                    current_mru.next = new_node
+                    new_node.previous = current_mru
+                    self.mru_node = new_node
                 
-                self.hash_map_nodes[key] = new_node #Pointer to Node
                 self.current_count +=1
 
-        print(f"@END, LRU is: {self.lru_node.next.key, self.lru_node.next.val}")
-        print(f"@END, MRU is: {self.mru_node.previous.key, self.mru_node.previous.val}")
+        print(f"@END, LRU is: {self.lru_node.key, self.lru_node.val}")
+        print(f"@END, MRU is: {self.mru_node.key, self.mru_node.val}")
+
+#"LRUCache", [3], 
+ip_commands = ["put", [1, 1], "put", [2, 2], "put", [3, 3], "get", [1], "get", [2], "get", [4], "put", [4, 4], "get", [1], "get", [2], "get", [3], "get", [4], "get", [2], "put", [1, 8], "put", [3, 7], "get", [1], "get", [2], "get", [3], "get", [4], "get", [5], "get", [2], "get", [3], "get", [4], "put", [1,9], "put", [6,6], "get", [1], "get", [2], "get", [3], "get", [4], "get", [5], "get", [6]]
+
+lru_cache = LRUCache(3)
+for i in range(0, len(ip_commands), 2):
+    print(ip_commands[i], ip_commands[i+1])
+    if ip_commands[i]=="put":
+        lru_cache.put(ip_commands[i+1][0], ip_commands[i+1][1])
+    else:
+        get_op = lru_cache.get(ip_commands[i+1][0])
+        print(f"Get O/P is: {get_op}")
+        if get_op==8:
+            break
+    print("-------------------")
+
+# More cleaner version!
+class Node:
+    def __init__(self, key, val):
+        self.key, self.val = key, val
+        self.prev = self.next = None
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.cap = capacity
+        self.cache = {}  # map key to node
+
+        self.left, self.right = Node(0, 0), Node(0, 0)
+        self.left.next, self.right.prev = self.right, self.left
+
+    def remove(self, node):
+        prev, nxt = node.prev, node.next
+        prev.next, nxt.prev = nxt, prev
+
+    def insert(self, node):
+        prev, nxt = self.right.prev, self.right
+        prev.next = nxt.prev = node
+        node.next, node.prev = nxt, prev
+
+    def get(self, key: int) -> int:
+        if key in self.cache:
+            self.remove(self.cache[key])
+            self.insert(self.cache[key])
+            return self.cache[key].val
+        return -1
+
+    def put(self, key: int, value: int) -> None:
+        if key in self.cache:
+            self.remove(self.cache[key])
+        self.cache[key] = Node(key, value)
+        self.insert(self.cache[key])
+
+        if len(self.cache) > self.cap:
+            lru = self.left.next
+            self.remove(lru)
+            del self.cache[lru.key]
 
         
