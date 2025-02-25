@@ -30,7 +30,8 @@ But can we do better?
 
 def kadanes(arr):
     curr_sum = 0
-    max_sum = arr[0] #As the array can have -ve elements, so either start with any element or -ve infinity
+    #max_sum = arr[0] #As the array can have -ve elements, so either start with any element or -ve infinity
+    max_sum = float('-inf')
 
     for num in arr:
         print(f"@ num: {num}")
@@ -53,7 +54,9 @@ print(kadanes(ip))
 
 def kadanes_sliding_window(arr):
     curr_sum = 0
-    max_sum = arr[0]
+    #max_sum = arr[0]
+    max_sum = float('-inf')
+
     max_L = 0
     max_R = 0
 
