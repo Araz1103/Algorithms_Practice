@@ -42,6 +42,7 @@ Constraints:
 -100 <= nums[i] <= 100
 nums is sorted in non-decreasing order.
 """
+# Technically a 2 pointer solution
 
 def removeDuplicates(nums):
     """
