@@ -1,9 +1,8 @@
 """
-Given an unsorted array of integers nums, return the length of the longest consecutive elements sequence.
+Given an unsorted array of integers nums, 
+return the length of the longest consecutive elements sequence.
 
 You must write an algorithm that runs in O(n) time.
-
- 
 
 Example 1:
 
@@ -213,3 +212,58 @@ print(longestConsecutive([1,-8,7,-2,-4,-4,6,3,-4,0,-7,-1,5,1,-9,-3]))
 print(longestConsecutive([-4, -3, -2, -1, 0, 1, -4, -4, -7, 0, -7, -8, -9, -6]))
 print(longestConsecutive([-2,-4,-4,-4,-1,-3]))
 print(longestConsecutive([-2,-4,-1,-3]))
+
+from typing import List
+class Solution:
+    def longestConsecutive(self, nums: List[int]) -> int:
+        # In 1 pass, I can hash all elements in a dict
+        # In another pass, I can start @each element
+        # Keep checking if +1 is in the hashmap or not
+        # The minute I see that it is not, that is the len
+        # Keep track of max len possible
+
+        # Also, to further optimise
+        # I know max len range (x to x+max_len)
+        # whenever I am checking for a new element
+        # If that is in this range
+        # I can skip
+        # since we know that x+max_len + 1 is not available
+
+        # Basically, once hashed, instead of iterating over nums
+        # Iterate over hashset
+        # also, check if num-1 in hashset or not
+        # If it is, this means that there must be a longer sequence
+        # And this is part of that
+        # So can skip this
+        # since sooner or later we will reach that starting point
+        # So this does the above optimisation as well!
+
+        if not nums:
+            return 0
+        max_len = 1
+        #max_range = []
+        elements_hashset = set(nums)
+        
+        for num in elements_hashset:
+            # Only check if num is not in max_range
+            # Additional Optimisation
+            # check_num = True
+            # if max_range:
+            #     if num >= max_range[0] and num <= max_range[1]:
+            #         check_num = False
+
+            check_num = True
+            if num -1 in elements_hashset:
+                check_num = False #Since part of a longer sequence
+            
+            if check_num:
+                current_len = 1
+                check_num = num
+                while (check_num+1) in elements_hashset:
+                    current_len+=1
+                    check_num+=1
+
+                max_len = max(max_len, current_len)
+                #max_range = [num, num + (current_len - 1)]
+
+        return max_len
