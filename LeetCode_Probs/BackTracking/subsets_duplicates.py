@@ -1,5 +1,8 @@
 from typing import List
 
+# Time complexity: O(N*2^N)
+# Memory is: O(N)
+
 def add_subsets_helper(arr, i, curr_set, sub_sets):
     if i >= len(arr): #Last element crossed, fill sub sets
         sub_sets.append(curr_set.copy()) #Fill with a copy, otherwise with reference, can get modified
