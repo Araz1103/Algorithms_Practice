@@ -38,7 +38,30 @@ Constraints:
 Methods pop, top and getMin operations will always be called on non-empty stacks.
 At most 3 * 104 calls will be made to push, pop, top, and getMin.
 """
+# Using 2 Stacks! Even more simple
+class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.minStack = []
 
+    # @each push append minimum then
+    def push(self, val: int) -> None:
+        self.stack.append(val)
+        val = min(val, self.minStack[-1] if self.minStack else val)
+        self.minStack.append(val)
+    
+    # So @each pop simply pop from min stack as well
+    def pop(self) -> None:
+        self.stack.pop()
+        self.minStack.pop()
+
+    def top(self) -> int:
+        return self.stack[-1]
+
+    # Will always have the minimum @each element of the stack corresponding in min stack
+    def getMin(self) -> int:
+        return self.minStack[-1]
+    
 # My approach
 # Basically maintain an array of the minimums
 # With push, add to it if there is a new minimum
