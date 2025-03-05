@@ -2,10 +2,10 @@
 Searching in a rotated sorted array
 
 1. If target is @middle -> Return it
-2. If middle < right: Means right side is sorted
+2. If middle < right (right index @end): Means right side is sorted
     - If target is > middle and < right, then we can do a Binary Search on this right side and get target
     - If not, this means that the target is in the left array, adjust right pointer and continue
-3. If middle > right: Means left side is sorted
+3. If middle > right (right index @end): Means left side is sorted
     - If target < middle and > right, then we can do a Binary Search on the left side and get target
     - If not, this means that target is in the right array, adjust left pointer and continue
 """
@@ -34,6 +34,7 @@ def search(nums: List[int], target: int) -> int:
 
     while l_p <= r_p:
         m_p = int(l_p + (r_p - l_p)/2)
+        print(f"MP is: {m_p}, val: {nums[m_p]}")
 
         if nums[m_p]==target:
             print("Found Target in OG Function!")

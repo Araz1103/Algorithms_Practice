@@ -19,6 +19,13 @@ Input: grid = [
 Output:
 2
 """
+
+# Time complexity: O(4^(M*N))
+# M Rows and N Cols
+# Reason is that @each position we have 4 possibilities to explore
+# Worst case we can explore at each position in the grid
+# So 4*4*4*.....*4 will run on the size of grid: M*N
+
 from typing import List
 
 def countPaths(grid: List[List[int]]) -> int:

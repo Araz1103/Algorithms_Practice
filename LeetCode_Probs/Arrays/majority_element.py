@@ -41,9 +41,6 @@ print(get_majority_element([1, 2, 1, 3, 2, 2, 1, 4, 3, 3, 1, 5, 1, 1, 1]))
 
 # OR Get a counter and check which has occurences > n/2
 def get_majority_element(ip_list):
-    # Sort the IP List in Ascending Order
-    # The element in the middle will be majority, as it's occurences are >= n/2
-    # This is assuming a majority element is always present
     cnt_dict = {}
     for num in ip_list:
         if num not in cnt_dict:
