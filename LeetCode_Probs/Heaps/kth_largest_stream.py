@@ -54,7 +54,7 @@ class KthLargest:
         self.push_element_heap(val)
         return self.heap[1] # New min, which is kth largest
 
-    def push_element_heap(self, val):
+    def push_element_heap(self, val): #O(Log(N)), as perculating up, we can go till height of tree, for balanced tree is O(Log(N))
         # We can directly append to Heap
         # Then check while current element is not root
         # That it is > it's parent
@@ -70,7 +70,7 @@ class KthLargest:
             i = i//2 # New index
 
 
-    def pop_from_heap(self):
+    def pop_from_heap(self): #O(Log(N)), as perculating down, we can go till height of tree, for balanced tree is O(Log(N))
 
         # First check Heap exists
         if len(self.heap)==1:
