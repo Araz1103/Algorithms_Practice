@@ -1,5 +1,42 @@
 from typing import List
 
+"""
+Design a class to find the kth largest integer in a stream of values, including duplicates.
+ E.g. the 2nd largest from [1, 2, 3, 3] is 3. The stream is not necessarily sorted.
+
+Implement the following methods:
+
+constructor(int k, int[] nums) Initializes the object given an integer k and the stream of integers nums.
+int add(int val) Adds the integer val to the stream and returns the kth largest integer in the stream.
+"""
+
+import heapq
+
+class KthLargest:
+
+    def __init__(self, k: int, nums: List[int]):
+        # Initialise a heap of size k
+        # We want this to be a min heap, with 3 smallest elements
+        self.minHeap, self.k = nums, k
+        heapq.heapify(self.minHeap)
+        while len(self.minHeap) > k:
+            heapq.heappop(self.minHeap) #Pop the current minimum
+
+        # So now, we will be left with a min heap with elements <= k
+        
+    def add(self, val: int) -> int:
+        # Add new element to the heap
+        heapq.heappush(self.minHeap, val)
+
+        # If post adding, we exceed K elements, we pop the minimum
+        # If not we don't, as in constraints it can be 1 less than k
+        if len(self.minHeap) > self.k:
+            heapq.heappop(self.minHeap)
+
+        # Return the current minimum
+        return self.minHeap[0]
+        
+# Implementation with Pop, Push and Heapify implemented!
 class KthLargest:
 
     def __init__(self, k: int, nums: List[int]):
