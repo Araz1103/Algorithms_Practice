@@ -39,6 +39,10 @@ def findKthLargest(nums: List[int], k: int) -> int:
 
     # @end we just need to return the minimum
     return min_heap[0]
+
+# One Liner, Internally does the same thing
+def findKthLargest(nums: List[int], k: int) -> int:
+    return heapq.nlargest(k, nums)[-1] #Since is in decreasing order, so we want last, kth
     
 print(findKthLargest([2, 1, 3, 4, 6, 5, 4, 1], 5))
 print(findKthLargest([2, 1, 3, 4, 6, 5, 4, 1], 1))
