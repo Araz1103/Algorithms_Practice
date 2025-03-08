@@ -44,4 +44,7 @@ class Solution:
             return cache[i]
 
         return get_max_rob(len(nums)-1, {}) #last index
+    
+# Time Complexity is O(N) due to memoisation, as for each i, we just calculate once, no sub work done!
+# Space Complexity is O(N), to store solution space for len(nums)
         
