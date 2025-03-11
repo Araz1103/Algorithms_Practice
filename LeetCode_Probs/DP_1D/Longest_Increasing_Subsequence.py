@@ -23,6 +23,9 @@ Constraints:
 from typing import List
 class Solution:
     # Brute Force, 2^N, Exponential!
+    # We can either incude each element or not for our sub-sequence
+    # so 2*2*.....*2 for N elements
+    # 2^N
     def lengthOfLIS(self, nums: List[int]) -> int:
         #Take the first element and 
         #keep checking against the ones on right
