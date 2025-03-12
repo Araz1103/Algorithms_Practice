@@ -55,17 +55,19 @@ def firstMissingPositive(nums):
     #print(nums)
     n = len(nums)
     for i, num in enumerate(nums):
-        #print(i, num)
+        print(i, num)
         # We keep swapping until the number at this position is correct nums[i] - 1
         # Or it is not in the range [1, n]
         while 1 <= nums[i] <= n and nums[i] != nums[nums[i] - 1]:
             # Swap nums[i] with the number at that position
             # We want to swap with what nums[i] belongs
             # Position of nums[i] is nums[i] - 1
+            print("Swapping", nums)
             nums[nums[i] - 1], nums[i] = nums[i], nums[nums[i] - 1]
-            #print(nums[i])
+            print("Swapped", nums)
+            print(nums[i])
 
-        #print(nums)
+        print(nums)
     
     #print(f"Final Nums: {nums}")
     # Now find the missing positive number
@@ -76,9 +78,10 @@ def firstMissingPositive(nums):
     # If all numbers are in their right place
     return n + 1
     
-print(firstMissingPositive([-1, 10, 2, 3, 5]))
-print(firstMissingPositive([-1, 0, 2, 3, 5, 1]))
-print(firstMissingPositive([-1, 4, 1, 10, 2, 3, 5]))
-print(firstMissingPositive([1, 10, 2, 3, 5, 8]))
-print(firstMissingPositive([-1, 110, 12, -3, 5]))
-print(firstMissingPositive([1,1]))
+#print(firstMissingPositive([-1, 10, 2, 3, 5]))
+#print(firstMissingPositive([-1, 0, 2, 3, 5, 1]))
+#print(firstMissingPositive([-1, 4, 1, 10, 2, 3, 5]))
+# print(firstMissingPositive([1, 10, 2, 3, 5, 8]))
+# print(firstMissingPositive([-1, 110, 12, -3, 5]))
+#print(firstMissingPositive([1,1]))
+print(firstMissingPositive([4,5,1,2,3]))
