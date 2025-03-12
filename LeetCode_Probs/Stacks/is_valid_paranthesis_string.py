@@ -59,19 +59,25 @@ def isValid(s):
                 check_stack.append(char)
             elif char == ')':
                 if last_element == "(": #Found Match Pop Last Element
-                    check_stack = check_stack[:-1]
+                    #check_stack = check_stack[:-1]
+                    # or
+                    check_stack.pop()
                 else:
                     return False
                     #check_stack.append(char)
             elif char == ']':
                 if last_element == "[": #Found Match Pop Last Element
-                    check_stack = check_stack[:-1]
+                    #check_stack = check_stack[:-1]
+                    # or
+                    check_stack.pop()
                 else:
                     return False
                     #check_stack.append(char)
             elif char == '}':
                 if last_element == "{": #Found Match Pop Last Element
-                    check_stack = check_stack[:-1]
+                    #check_stack = check_stack[:-1]
+                    # or
+                    check_stack.pop()
                 else:
                     return False
                     #check_stack.append(char)
@@ -90,5 +96,5 @@ print(isValid("()"))
 print(isValid("{}(){}["))
 print(isValid("{}([]){}"))
 print(isValid("{{}(){}{[]}}"))
-print(isValid("{}({}){}[[]"))
+print(isValid("{}({}){}[]("))
         
