@@ -50,6 +50,31 @@ class Solution:
                     L+=1
                 max_substring = max(max_substring, len(current_list))
             return max_substring
+        
+# True: O(N) Time complexity and O(1) space since 26 letters for lowercase
+def substring(chars):
+    l = 0
+    max_l, max_r = 0,0
+    char_count = {} #stores count of chars
+    for r in range(len(chars)):
+        if chars[r] not in char_count: #Not seen this character yet
+            char_count[chars[r]] = 1
+        else:
+            char_count[chars[r]]+=1
+            # Check if count is >1
+            if char_count[chars[r]] > 1:
+                # Means duplicate, we keep shrinking window, until this goes down to 0
+                while char_count[chars[r]] > 1:
+                    char_count[chars[l]]-=1
+                    l+=1
+                # Now is a valid window
+        # Update Max Substring with max_l and max_r
+        if r-l+1 >= (max_r-max_l+1):
+            max_l = l
+            max_r = r
+    return chars[max_l:max_r+1]
+
+print(substring("abcabcbbefghhibtacs"))
                 
 
         
