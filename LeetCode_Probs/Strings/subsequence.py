@@ -61,3 +61,36 @@ def isSubsequence(s, t):
         
 print(isSubsequence("b", "abc"))
 
+# If we had a lot of s strings, then we pre-process t
+
+from collections import defaultdict
+import bisect
+
+def isSubsequence(s: str, t: str) -> bool:
+    # Step 1: Preprocess `t`
+    char_positions = defaultdict(list)
+    for i, char in enumerate(t):
+        char_positions[char].append(i)
+
+    # Step 2: Check each character in `s`
+    prev_index = -1  # Tracks last matched position in `t`
+    for char in s:
+        if char not in char_positions:
+            return False  # Character not in `t`
+
+        # Find the next valid position using binary search
+        pos_list = char_positions[char]
+        next_pos = bisect.bisect_right(pos_list, prev_index)
+
+        if next_pos == len(pos_list):
+            return False  # No valid position found
+        
+        prev_index = pos_list[next_pos]  # Move forward in `t`
+    
+    return True
+
+# Test Cases
+print(isSubsequence("aabc", "aaahbgaadcb"))  # True
+print(isSubsequence("aabc", "aaahbgdb"))    # False
+
+
