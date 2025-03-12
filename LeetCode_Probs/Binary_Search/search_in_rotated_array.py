@@ -6,7 +6,7 @@ Searching in a rotated sorted array
     - If target is > middle and < right, then we can do a Binary Search on this right side and get target
     - If not, this means that the target is in the left array, adjust right pointer and continue
 3. If middle > right (right index @end): Means left side is sorted
-    - If target < middle and > right, then we can do a Binary Search on the left side and get target
+    - If target < middle and > left, then we can do a Binary Search on the left side and get target
     - If not, this means that target is in the right array, adjust left pointer and continue
 """
 
