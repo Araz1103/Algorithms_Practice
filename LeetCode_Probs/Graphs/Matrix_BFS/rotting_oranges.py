@@ -90,4 +90,4 @@ class Solution:
                 if grid[r][c]==1:
                     return -1 #We found 1 orange not rotten
 
-        return length
+        return length #Time Complexity is O(m*n), since we max explore all elements once!

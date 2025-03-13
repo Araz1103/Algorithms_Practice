@@ -78,11 +78,13 @@ def removeDuplicates(nums):
     L = 0
     unique_count = 1
     for R in range(1, len(nums)):
+        print(nums, nums[L], L, unique_count)
         if nums[R]!=nums[L]:
             #or unique_count>0: 
             #means we found another unique element
             # Swap @L+1
             nums[L+1], nums[R] = nums[R], nums[L+1]
+            print("New Unique Element!")
             # Unique Count is set back to 2
             unique_count = 1
             L+=1
@@ -94,6 +96,7 @@ def removeDuplicates(nums):
             # This means that not allowed any more elements
             # L stays here
             if unique_count >= 0: #If occurences allowed, we swap and shift L to next
+                print("L+=1")
                 # Swap @L+1
                 nums[L+1], nums[R] = nums[R], nums[L+1]
                 L+=1
