@@ -6,7 +6,7 @@ class Node:
         self.val = val
         self.neighbors = neighbors if neighbors is not None else []
 
-# Given a starting node of a graph, clone and return it
+# Given a starting node of a graph, clone and return starting node of the clone graph
 class Solution:
     def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
         if not node:
