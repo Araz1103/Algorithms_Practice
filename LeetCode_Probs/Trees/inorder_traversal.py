@@ -72,7 +72,7 @@ class Solution(object):
         # Since list is mutable, once passed to the function
         # Keeps adding whenever finds a root
         # Rest helps it go in the right Traversal
-        if not root:
+        if root:
             self.inorderTraversal(root.left, result)
             result.append(root.val)
             self.inorderTraversal(root.right, result)
