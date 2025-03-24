@@ -1,4 +1,4 @@
-def generate(numRows: int)
+def generate(numRows: int):
 
         if numRows==1:
             return [[1]]
