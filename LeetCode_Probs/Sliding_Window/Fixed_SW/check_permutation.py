@@ -84,3 +84,40 @@ def checkInclusion(s1, s2):
 a = "ab"
 b = "eidbaooo"
 print(checkInclusion(a, b))
+
+class Solution:
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+        # We have a sliding window of fixed size
+        # We keep checking in that if that is same as s1 or not
+        # Use a hashmap, so keep adding and subtracting from that
+
+        s1_hashmap = Counter(s1)
+
+        len_s1 = len(s1) #Size of Fixed Window
+
+        if len(s2) < len_s1:
+            return False
+
+        current_hashmap = Counter(s2[:len_s1])
+        if current_hashmap==s1_hashmap:
+            return True
+        
+        # Now check in this fixed window
+        # Keep sliding it, and remove from behind and add new char
+        p0 = 0
+
+        for p1 in range(len_s1, len(s2)):
+            # Remove from Hashmap and add to it
+            current_hashmap[s2[p0]]-=1
+            if current_hashmap[s2[p0]]==0:
+                del current_hashmap[s2[p0]]
+
+            current_hashmap[s2[p1]]+=1
+
+            if current_hashmap==s1_hashmap:
+                return True
+            p0+=1
+
+        return False
+
+        
