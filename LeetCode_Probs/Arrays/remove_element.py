@@ -65,13 +65,14 @@ def removeElement(nums, val):
         print(idx, element)
         if element != val:
             # First swap with the element @K
-            nums[k] = nums[idx]
+            nums[k], nums[idx] = nums[idx], nums[k]
             # Then let's take K forward
             k += 1
         print("K", k)
         print(f"Nums now: {nums}")
         
     print(nums)
+    print(k)
     return k
 
 #removeElement([1, 1, 2, 3, 4, 5, 1], 1)
