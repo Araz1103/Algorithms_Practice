@@ -89,6 +89,10 @@ def isSubsequence(s: str, t: str) -> bool:
     
     return True
 
+# bisect_right(positions, prev_index) finds the first index strictly greater than prev_index.
+# Ensures that characters in s match in order with t.
+# Efficient: O(log n) lookup per character in s.
+
 # Test Cases
 print(isSubsequence("aabc", "aaahbgaadcb"))  # True
 print(isSubsequence("aabc", "aaahbgdb"))    # False
