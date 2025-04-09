@@ -79,4 +79,27 @@ example_ll.print_list()
 example_ll.reverseList()
 example_ll.print_list()
 
+# Recursive way
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def reverseList(head):
+    # Base case: If empty or only one node, it's already reversed
+    if not head or not head.next:
+        return head
+
+    # Recursively reverse the rest of the list
+    new_head = reverseList(head.next)
+
+    # Put the current node after its next node
+    head.next.next = head
+    # break previous old link
+    head.next = None
+
+    # new head remains the last node
+    return new_head
+
+
         
