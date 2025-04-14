@@ -40,6 +40,8 @@ Output: 4
 # So the max area with this histogram is #neighbours on both directions >= this bar * height of this bar
 # Also, count this bar itself too in this calculation, if there are no neighbours in either directions satisfying this
 
+# Area = height[i] * (number of bars I can stretch to left + right + myself)
+
 # So once we iterate through and find all areas, return the max of all of them!
 
 # So basically I can do 1 iteration from left to right, finding the next lesser element
@@ -57,6 +59,36 @@ def largestRectangleArea(heights):
     """
     :type heights: List[int]
     :rtype: int
+
+    Given a list of bar heights representing a histogram (where each bar has width = 1),
+    this function returns the area of the largest rectangle that can be formed using 
+    one or more consecutive bars.
+
+    ✅ Intuition:
+    For each bar, we want to compute:
+    - How far left and right we can expand (i.e., consecutive bars that are ≥ current bar height).
+    - Total width = left count + right count + 1 (the bar itself).
+    - Area = height * total width.
+
+    🧠 Key Idea:
+    Use a monotonic increasing stack to efficiently find:
+    - The number of consecutive bars to the RIGHT (Left-to-Right Pass)
+    - The number of consecutive bars to the LEFT (Right-to-Left Pass)
+    before hitting a shorter bar.
+
+    🧱 How It Works:
+    1. Left-to-Right pass:
+       - For each index, find how many bars to the right are ≥ current bar.
+       - Use a monotonic stack that maintains increasing heights.
+    2. Right-to-Left pass:
+       - Same idea, but in reverse direction to find left span.
+    3. For each bar:
+       - total_width = left_span + right_span + 1
+       - area = height * total_width
+    4. Return the maximum area across all bars.
+
+    🕒 Time Complexity: O(n)
+    🗂️ Space Complexity: O(n)
     """
 
     #print(heights)
