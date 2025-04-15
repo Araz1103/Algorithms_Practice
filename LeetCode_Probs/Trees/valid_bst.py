@@ -54,12 +54,14 @@ Space Complexity:
         Example (skewed tree):
 
                 5
-               /
-              4
+               / \
+              4   6
              /
             3
 
         - Call stack grows like: dfs(5) → dfs(4) → dfs(3)
+        - dfs(6) will only happen when left call stacks are finished
+        - So active call stacks can be max at tree height
         - So the max depth of recursion = tree height.
         - Balanced tree ⇒ O(log N)
         - Skewed tree ⇒ O(N)
