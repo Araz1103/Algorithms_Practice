@@ -32,7 +32,7 @@ board[i] consists only of lowercase English letter.
 words[i] consists only of lowercase English letters.
 All strings within words are distinct.
 """
-
+from typing import List
 class Solution:
     def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
         """
