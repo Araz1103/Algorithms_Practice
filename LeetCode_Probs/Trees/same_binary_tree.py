@@ -23,6 +23,10 @@ Constraints:
 # Time Complexity is O(N) as we have to traverse nodes of both trees
 # Space is Height of the Longer Tree for Recursion Call Stack
 # For balanced tree: O(log(N))
+# Time Complexity: O(N)
+# (where N is the number of nodes in the smaller or equal tree) Smaller as we stop comparing if not equal
+# Space Complexity: O(H)
+# (where H is the height of the deeper tree → O(log N) for balanced, O(N) for skewed)
 
 from typing import Optional
 
