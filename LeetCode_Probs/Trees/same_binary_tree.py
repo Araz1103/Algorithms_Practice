@@ -20,6 +20,9 @@ Constraints:
 0 <= The number of nodes in both trees <= 100.
 -100 <= Node.val <= 100
 """
+# Time Complexity is O(N) as we have to traverse nodes of both trees
+# Space is Height of the Longer Tree for Recursion Call Stack
+# For balanced tree: O(log(N))
 
 from typing import Optional
 
