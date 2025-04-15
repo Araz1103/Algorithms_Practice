@@ -19,6 +19,10 @@ def findMinBST(root):
 #         self.val = val
 #         self.left = left
 #         self.right = right
+
+# Time and Space Complexity: O(log(N)) for Balanced Tree
+# O(N) worst case for skewed tree
+# Space is number of recursion stack calls, equal to height of the tree
 class Solution(object):
     def findMinNode(self, root):
         curr_node = root

@@ -46,6 +46,9 @@ class Solution(object):
         return root
     
 # Recursive Solution
+# Time and Space Complexity: O(log(N)) for Balanced Tree
+# O(N) worst case for skewed tree
+# Space is number of recursion stack calls, equal to height of the tree
 class Solution(object):
     def insertIntoBST(self, root, val):
         """
