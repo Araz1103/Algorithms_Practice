@@ -54,6 +54,7 @@ class Solution:
         def bfs(r,c):
             queue = deque()
             queue.append((r,c))
+            visited.add((r, c)) #IMP Add
             while queue:
                 curr_r, curr_c = queue.popleft()
                 for row_diff, col_diff in directions:
@@ -73,6 +74,7 @@ class Solution:
         def dfs(r,c):
             queue = deque()
             queue.append((r,c))
+            visited.add((r, c)) #IMP Add
             while queue:
                 # Instead of popping from left
                 # We pop from end, so LIFO
