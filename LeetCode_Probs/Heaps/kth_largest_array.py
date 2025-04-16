@@ -21,6 +21,11 @@ Constraints:
 -1000 <= nums[i] <= 1000
 
 """
+# TC: n*log(k), as for each of the n elements, do heappush and heappop
+# Since size of heap is always k: log(k) for each operation
+# So 2*log(k)*n = O(n*log(k))
+# SC: Heap Size is k, so O(k)
+
 from typing import List
 import heapq
 
