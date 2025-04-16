@@ -1,0 +1,28 @@
+Example Google machine learning engineer interview questions: ML domain
+
+What are the most important algorithms, programming terms, and theories to understand as a machine learning engineer?
+Can you describe a machine learning project you have worked on and the impact it had?
+How would you explain machine learning to someone who doesn't understand it?
+How to write a neural network in PyTorch
+How to deploy a model in cloud providers like GCP and AWS
+When do you deal with overfitting (dropout, weight decay, augmentation)?
+When do you stop training a model?
+How do you stay up to date with the latest news and trends in machine learning?
+
+Example Google machine learning engineer interview questions: ML system design
+
+General
+
+How would you build, train, and deploy a system that detects if multimedia and/or ad content violates terms or contains offensive materials? 
+Design autocomplete and/or spell check on a mobile device.
+Design autocomplete and/or automatic responses for email.
+Design the YouTube recommendation system.
+Follow-up questions
+
+How would you optimize prediction throughput for an RNN-based model?
+What loss function will you optimize and why?
+What data will you collect to train your model and why?
+How will you avoid bias and feedback loops?
+How will you handle a corrupt model or an incorrect training batch?
+
+Be prepared to implement fundamental ML techniques (e.g., Convolution, Batch Normalization, Logistic Regression) in pure Python
