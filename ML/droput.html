@@ -1,0 +1,53 @@
+Here’s your **5‑step “Dropout Story”**—a self‑contained narrative you can memorize and recite in your interview. Each step builds on the last, showing **exactly what happens to activations and weights** during training, and why inference is so simple afterward.
+
+---
+
+## 5‑Step Dropout Story
+
+1. **Sample & Apply the Mask**  
+   - **What:** For each neuron in a dropout layer, sample a binary mask \(m_i \sim \mathrm{Bernoulli}(p)\).  
+   - **Why:** Randomly “turn off” a fraction \((1-p)\) of neurons so no one neuron can over‑rely on another.  
+   - **Result:** Some activations become zero; only the “kept” neurons \(m_i=1\) remain active this batch.
+
+2. **Scale the Surviving Activations**
+   - **What:** Divide every kept activation by \(p\):  
+     \[
+       \tilde a_i = \frac{a_i \, m_i}{p}.
+     \]  
+   - **Why:** Without scaling, the average activation would drop to \(p \times a_i\).  Scaling by \(1/p\) preserves  
+     \(\mathbb{E}[\tilde a_i] = a_i\), so subsequent layers see the **same expected signal** as if no dropout occurred.  
+   - **Result:** The network’s expected forward‑signal is unchanged, letting you leave inference code untouched.
+
+3. **Forward Propagation with Dropout**  
+   - **What:** Use the masked & scaled activations \(\tilde a\) to compute the next layer’s inputs, and so on, until you compute the loss.  
+   - **Why:** Each mini‑batch effectively trains a different “thinned” subnetwork. Over many batches, you train an ensemble of \(2^n\) subnetworks (where \(n\) is the number of dropped neurons).  
+   - **Result:** You fit not one rigid network, but a robust family of subnetworks that share weights.
+
+4. **Backward Propagation (Gradient Flow)**  
+   - **What:** Backpropagate the loss through the same mask: dropped neurons (\(m_i=0\)) receive no gradient; kept neurons (\(m_i=1\)) receive gradients scaled by \(1/p\).  
+   - **Why:** Neurons that survive see stronger, unbiased gradient signals; dropped neurons simply skip this update.  
+   - **Result:** Weights connected to reliably important neurons get reinforced; less‑useful connections see fewer or smaller updates.
+
+5. **Update the Weights**  
+   - **What:** Perform your usual weight update (e.g. SGD or Adam) using the gradients computed in Step 4.  
+   - **Why:** Because each neuron was sometimes dropped, **no single weight** ever learns in the context of all co‑neurons; it must learn features that work even when partners are missing.  
+   - **Result:** The final learned weights encode **redundant**, **robust** features that generalize far better.  
+
+---
+
+## Inference (Test Time)  
+- **Disable Dropout:** Set \(p=1\), or simply remove the mask.  
+- **No Scaling Needed:** You trained with inverted dropout, so your weights already compensate for the prior scaling—just do a normal forward pass.  
+- **Ensemble Effect:** That single forward pass approximates the **average prediction** of the massive ensemble you implicitly trained.
+
+---
+
+## Why This Makes You Generalize  
+- **Breaks Co‑adaptation:** Neurons can’t rely on a fixed partner, so each learns independently useful features.  
+- **Implicit Model Averaging:** You get the benefits of an exponential ensemble at almost no extra inference cost.  
+- **Consistent Signal:** Scaling ensures the training and inference signals match, so you don’t have to retune learning rates or thresholds.
+
+---
+
+### TL;DR for Interview Recap
+> “On each mini‑batch, we **(1) mask** activations randomly, **(2) scale** the survivors by \(1/p\), then do a normal **forward** and **backward** pass, and finally **update** weights.  This forces each neuron to learn robust features and simulates an ensemble of subnetworks.  At test time, we simply disable dropout—no extra scaling or code changes are needed.”
