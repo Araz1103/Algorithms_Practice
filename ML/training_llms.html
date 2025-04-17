@@ -1,0 +1,194 @@
+# Efficient LLM Training on a Single Accelerator
+
+Training large language models typically requires distributing computation across many GPUs or TPUs. However, with careful engineering and optimization, you can train scaled-down or distilled variants on a single accelerator. This document covers key techniques and concepts, along with a detailed Q&A section for interviews.
+
+---
+
+## 🔧 Key Techniques for Efficient LLM Training on a Single Accelerator
+
+### 1. Mixed-Precision Training (FP16/BF16)
+
+**Concept:**
+- Reduce memory usage and speed up training by using 16-bit floating point numbers (FP16 or BF16) instead of 32-bit floats (FP32).
+
+**How it works:**
+- The forward and backward passes run in half-precision.
+- Parameter updates (e.g., in Adam) are performed in full precision (FP32) to avoid numerical instability.
+
+**Tools & Frameworks:**
+- PyTorch: `torch.cuda.amp.autocast()` and `GradScaler()`
+- TensorFlow: `tf.keras.mixed_precision`
+
+---
+
+### 2. Gradient Checkpointing (Activation Checkpointing)
+
+**Concept:**
+- Instead of storing all intermediate activations during the forward pass, recompute them during the backward pass.
+
+**Benefits:**
+- Reduces memory usage by up to 50%.
+
+**Trade-off:**
+- Slightly more compute due to extra forward passes.
+
+**Tools:**
+- PyTorch: `torch.utils.checkpoint.checkpoint`
+- DeepSpeed: Built-in support for activation checkpointing
+
+---
+
+### 3. Memory-Efficient Optimizers
+
+**8-bit Optimizers:**
+- Optimizers like Adam store running averages. Converting these to 8-bit saves a lot of memory.
+
+**Examples:**
+- `bitsandbytes` for 8-bit Adam
+
+**Flash Attention:**
+- A more efficient implementation of attention layers with reduced memory overhead.
+
+**Frameworks:**
+- DeepSpeed ZeRO-Offload (balances memory usage between GPU and CPU)
+
+---
+
+### 4. Batch Size and Gradient Accumulation
+
+**Gradient Accumulation:**
+- Accumulate gradients over `N` micro-batches before updating the model.
+- Simulates large batch training on limited hardware.
+
+**Why it's important:**
+- Helps achieve better generalization without exceeding GPU memory.
+
+---
+
+### 5. Model Parallelism Variants
+
+**Tensor Parallelism:**
+- Split tensors in large layers (e.g., matrix multiplies) across cores of a single GPU (with NVLink/NVSwitch).
+
+**Pipeline Parallelism:**
+- Split model layers sequentially and reuse GPU memory via activation checkpointing.
+
+**1D/2D Parallelism:**
+- Sophisticated sharding techniques used in frameworks like Megatron-LM.
+
+---
+
+### 6. Optimized Data Loading
+
+**Prefetching and Caching:**
+- Asynchronously load and prepare batches while the model is training on the current batch.
+
+**Sharding:**
+- Break large datasets into smaller chunks to avoid loading everything into memory.
+
+**Streaming:**
+- Stream data on-the-fly from disk or cloud.
+
+---
+
+### 7. Profiling and Tuning
+
+**Tools:**
+- `torch.cuda.memory_summary()`
+- `nvprof`, `Nsight Systems`, `TensorBoard`
+
+**Performance Tips:**
+- Use `torch.compile()` or `torch.jit` in PyTorch 2.0+
+- Tune batch size, sequence length, and activation sizes
+
+---
+
+## 🤖 What is an Accelerator?
+
+**Accelerators** are specialized hardware devices designed to speed up computation for machine learning workloads.
+
+### Common Accelerators:
+- **GPU (Graphics Processing Unit):** Parallelism, high memory bandwidth
+- **TPU (Tensor Processing Unit):** Google-designed for tensor ops
+- **NPU/DSP:** Used in mobile or edge devices
+
+**Why use accelerators?**
+- Drastically faster matrix operations
+- Handles high-dimensional tensor ops (like attention) efficiently
+
+---
+
+## 📚 Popular Interview Questions and Answers
+
+### 🔎 Data Leakage (ML + LLM)
+
+**Q1: What is data leakage?**
+- It happens when a model has access to information during training that it wouldn't have during real deployment.
+
+**Q2: How can leakage occur during preprocessing?**
+- Example: Scaling your entire dataset before splitting into train/test — test data influences training pipeline.
+
+**Q3: What is target leakage?**
+- When input features contain data derived from the target variable. E.g., using "payment date" to predict "will the user pay?"
+
+**Q4: How does data leakage occur in LLMs?**
+- Including evaluation/test set content (e.g., MMLU or HELM) in pretraining corpus — causes memorization.
+
+**Q5: How do you prevent leakage in LLMs?**
+- Rigorous deduplication
+- Hash matching eval sets against train corpus
+- Redacting known benchmark datasets
+
+**Q6: What is label leakage in LLM fine-tuning?**
+- If fine-tuning with prompts that include answers or labels directly, the model learns the output pattern instead of reasoning.
+
+---
+
+### 🚀 Efficient Single-Accelerator LLM Training
+
+**Q1: How do you train LLMs on a single GPU?**
+- Mixed precision
+- Gradient checkpointing
+- LoRA (Low-Rank Adaptation)
+- Streaming data
+- Quantized weights
+
+**Q2: What is gradient accumulation?**
+- Technique to simulate large batch sizes by splitting and accumulating smaller micro-batches.
+
+**Q3: Why use 8-bit or 4-bit weights or optimizers?**
+- Saves memory
+- Slight degradation in accuracy, but acceptable trade-off
+
+**Q4: What is LoRA and why is it useful?**
+- Efficient fine-tuning method — injects trainable matrices into attention layers.
+- Only updates a few parameters → lower memory use.
+
+**Q5: What are the main memory bottlenecks in LLM training?**
+- Storing hidden activations during forward pass
+- Optimizer state (Adam: 3x parameters)
+- Large sequences (long context = large tensors)
+
+**Q6: What profiling tools do you use?**
+- `torch.cuda.memory_summary()`
+- `nvidia-smi`
+- `Nsight`, `TensorBoard`, or `wandb`
+
+---
+
+## 🧠 Quick Reference
+
+| Concept | Tool | Description |
+|--------|------|-------------|
+| Mixed Precision | `torch.cuda.amp` | FP16/BF16 training to save memory and increase speed |
+| Checkpointing | `torch.utils.checkpoint` | Save memory by recomputing activations |
+| Gradient Accumulation | `optimizer.step()` after N steps | Simulate large batch sizes |
+| 8-bit Optimizers | `bitsandbytes` | Reduce optimizer memory usage |
+| Flash Attention | `xformers`, `triton` | Efficient attention implementation |
+| LoRA | `peft` by HuggingFace | Efficient fine-tuning with low memory overhead |
+| Data Deduplication | Hash matching | Prevent LLM data leakage |
+
+---
+
+Let me know if you'd like an HTML, PDF, or downloadable `.md` version!
+
