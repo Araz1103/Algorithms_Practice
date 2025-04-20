@@ -127,3 +127,36 @@ Tell me about a time you made a serious mistake. What did you learn?
 What is your greatest weakness?
 What is your favorite Google product and why?
 """
+
+"""
+Googleyness interview questions at Google
+
+Why Google?
+Tell me about yourself
+Tell me about a challenge or conflict you faced at your past/current job. How did you handle it?
+Tell me about a time you had to change
+Tell me about a time when you had to come up with a creative solution to solve a problem.
+Tell me about a time you created something from nothing
+Tell me about your biggest achievements in your past work
+Tell me about the last time you failed, and what happened
+Tell me about your favorite Google product
+Why this position? 
+Where do you see your career moving?
+Why are you leaving your former position?
+What are your strengths and weaknesses?
+What makes a good [job title]? What makes a bad [job title]?
+If you had coffee with Sundar Pichai what would you talk to him about?
+
+Leadership interview questions at Google
+
+Tell me about a time you demonstrated leadership even though you weren't the formal manager
+Tell me about a time you led a team through a difficult situation
+Tell me about a time you developed and retained team members
+Tell me about a time you had to handle trade offs and ambiguity
+Which traits differentiate a manager from a leader, and how do you rank yourself as a leader on those traits?
+How would you deal with a team challenge in a balanced way?
+How would you address a skill gap or personality conflict?
+How would you ensure your team is diverse and inclusive?
+Tell me about a time you were the end-to-end owner of a project
+Tell me about a time you improved a process at one of your previous workplace
+"""
