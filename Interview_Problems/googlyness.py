@@ -1,3 +1,41 @@
+"""
+Googlyness:
+1. Dream of the next moonshot idea, 
+2. Thrive in ambiguity
+3. Value feedback
+4. Effectively challenge the status quo
+5. Do the right thing!
+"""
+
+"""
+Being comfortable with ambiguity
+Being humble and valuing feedback
+Having a bias for action
+Doing the right thing
+Taking ownership
+Having high standards and dreaming big
+Thinking freely
+Enjoying fun
+"""
+
+# Why Google?
+"""
+Your Answer!
+"""
+
+# Why Google Ads?
+"""
+Your Answer!
+"""
+
+"""
+Attributes like enjoying fun (who doesn’t), 
+a certain dose of intellectual humility (it’s hard to learn if you can’t admit that you might be wrong), 
+a strong measure of conscientiousness (we want owners, not employees), 
+comfort with ambiguity (we don’t know how our business will evolve, 
+and navigating Google internally requires dealing with a lot of ambiguity), 
+and evidence that you’ve taken some courageous or interesting paths in your life
+"""
 # General Behavioral Questions
 
 """
@@ -80,4 +118,12 @@
 4.	Have you encountered unreasonable tasks from your manager? How did you handle them?
 5.	Describe a time when you had to make last-minute changes to your code. How did you feel about it?
 6.	How do you stay updated with the latest industry trends? Can you give an example of applying a new trend or technology in your work?
+"""
+
+# More Qs!
+"""
+If you had coffee with our CEO, what would you talk to him about?
+Tell me about a time you made a serious mistake. What did you learn?
+What is your greatest weakness?
+What is your favorite Google product and why?
 """
